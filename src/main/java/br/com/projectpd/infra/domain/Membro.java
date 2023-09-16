@@ -1,4 +1,4 @@
-package br.com.projectpd.domain;
+package br.com.projectpd.infra.domain;
 
 import java.time.LocalDate;
 
@@ -6,11 +6,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import br.com.projectpd.utils.Endereco;
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @Document("membro")
 public class Membro {
 	
@@ -18,7 +18,10 @@ public class Membro {
 	private String id;
 	private String cpf;
 	private String nomeCompleto;
+	private String titulo;
 	private LocalDate dataNascimento;
+	private Long numeroTelefone;
+	private String email;
 	private Endereco endereco;
 	
 }

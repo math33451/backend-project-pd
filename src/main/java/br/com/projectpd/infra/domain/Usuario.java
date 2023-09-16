@@ -1,13 +1,13 @@
-package br.com.projectpd.domain;
+package br.com.projectpd.infra.domain;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
 @Document("usuario")
 public class Usuario {
 	
@@ -16,9 +16,5 @@ public class Usuario {
 	private String nomeUsuario;
 	private String senha;
 	private Membro membro;
-
-	public Usuario() {
-		// TODO Auto-generated constructor stub
-	}
 
 }
