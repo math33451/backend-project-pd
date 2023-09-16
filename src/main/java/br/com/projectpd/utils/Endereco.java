@@ -11,7 +11,7 @@ public class Endereco {
 	private String logradouro;
 	private Long numeroEndereco;
 	private String complemento;
-	private String municipio;
+	private String localidade;
 	private String uf;
 	private String bairro;
 
