@@ -17,7 +17,10 @@ public class MembroSaveDTO {
 	private Long numeroTelefone;
 	private String email;
 	private String cep;
-	private String endereco;
+	private String logradouro;
 	private Long numeroEndereco;
 	private String complemento;
+	private String municipio;
+	private String uf;
+	private String bairro;
 }

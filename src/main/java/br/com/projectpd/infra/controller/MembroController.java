@@ -30,15 +30,26 @@ public class MembroController {
 		return service.findAll();
 	}
 	
-	@GetMapping("/{cpf}")
+	@GetMapping("/{id}")
+	public MembroDTO buscarPorId(@PathVariable String id) throws Exception{
+		return service.findById(id);
+	}
+	
+	@GetMapping("/byCpf/{cpf}")
 	public MembroDTO buscarPorCpf(@PathVariable String cpf){
 		return service.findByCpf(cpf);
 	}
 	
-	@PostMapping("/criar")
-	public ResponseEntity<?> salvarMembro(@RequestBody MembroSaveDTO membro){
+	@PostMapping("/save")
+	public ResponseEntity<?> salvarMembro(@RequestBody MembroSaveDTO membro) throws Exception{
 		service.save(membro);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok("Novo membro salvo com sucesso.");
+	}
+	
+	@PostMapping("/edit")
+	public ResponseEntity<?> editarMembro(@RequestBody MembroSaveDTO membro) throws Exception{
+		service.editarMembro(membro);
+		return ResponseEntity.ok("Alterações salvas com sucesso.");
 	}
 	
 	@DeleteMapping("/delete/{cpf}")
