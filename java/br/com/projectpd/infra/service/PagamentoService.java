@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import br.com.projectpd.infra.domain.Membro;
 import br.com.projectpd.infra.domain.Pagamento;
 import br.com.projectpd.infra.dto.PagamentoDTO;
+import br.com.projectpd.infra.dto.PagamentoSaveDTO;
 import br.com.projectpd.infra.repository.PagamentoRepository;
 
 
@@ -38,13 +39,16 @@ public class PagamentoService {
 //		return dto;
 //	}
 
-	public void save(PagamentoDTO dto) {
-		Pagamento novoPagamento = modelMapper.map(dto, Pagamento.class);
+	public void save(PagamentoSaveDTO dto) throws Exception {
+		Pagamento novoPagamento = new Pagamento();
 		Membro membro = membroService.findDomainPorCpf(dto.getCpfPagante());
+		if(membro == null) {
+			throw new Exception("Erro ao processar pagamento, tente novamente mais tarde.");
+		}
 		novoPagamento.setPagante(membro);
+		novoPagamento.setValor(dto.getValor());
 		novoPagamento.setDataPagamento(LocalDate.now());
 		repository.save(novoPagamento);
-		
 	}
 
 }

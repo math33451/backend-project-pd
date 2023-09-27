@@ -1,5 +1,6 @@
 package br.com.projectpd.infra.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.projectpd.infra.dto.PagamentoDTO;
+import br.com.projectpd.infra.dto.PagamentoSaveDTO;
 import br.com.projectpd.infra.service.PagamentoService;
 import lombok.AllArgsConstructor;
 
@@ -33,10 +35,15 @@ public class PagamentoController {
 		return null;
 	}
 	
+	@GetMapping("/{data}")
+	public PagamentoDTO buscarPorData(@PathVariable LocalDate data){
+		return null;
+	}
+	
 	@PostMapping("/criar")
-	public ResponseEntity<?> salvarPagamento(@RequestBody PagamentoDTO membro){
-		service.save(membro);
-		return ResponseEntity.ok().build();
+	public ResponseEntity<?> salvarPagamento(@RequestBody PagamentoSaveDTO dto) throws Exception{
+		service.save(dto);
+		return ResponseEntity.ok("Pagamento registrado com sucesso.");
 	}
 
 }
