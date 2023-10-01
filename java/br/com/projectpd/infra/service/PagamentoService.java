@@ -1,7 +1,9 @@
 package br.com.projectpd.infra.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.projectpd.infra.domain.Membro;
 import br.com.projectpd.infra.domain.Pagamento;
+import br.com.projectpd.infra.dto.MembroDTO;
 import br.com.projectpd.infra.dto.PagamentoDTO;
 import br.com.projectpd.infra.dto.PagamentoSaveDTO;
 import br.com.projectpd.infra.repository.PagamentoRepository;
@@ -27,8 +30,8 @@ public class PagamentoService {
 	private MembroService membroService;
 
 	public List<PagamentoDTO> findAll() {
-		List<Pagamento> membros = repository.findAll();
-		List<PagamentoDTO> listaDTO = membros.stream().map(m -> modelMapper.map(m, PagamentoDTO.class)).collect(Collectors.toList());
+		List<Pagamento> pagamentos = repository.findAll();
+		List<PagamentoDTO> listaDTO = pagamentos.stream().map(m -> modelMapper.map(m, PagamentoDTO.class)).collect(Collectors.toList());
 		return listaDTO;
 	}
 	
@@ -49,6 +52,27 @@ public class PagamentoService {
 		novoPagamento.setValor(dto.getValor());
 		novoPagamento.setDataPagamento(LocalDate.now());
 		repository.save(novoPagamento);
+	}
+
+	public PagamentoDTO findById(String id) throws Exception {
+		Optional<Pagamento> domain = repository.findById(id);
+		if(domain.isEmpty()) {
+			throw new Exception("Pagamento não encontrado.");
+		}
+		MembroDTO membroDTO = modelMapper.map(domain.get().getPagante(), MembroDTO.class);		
+		PagamentoDTO dto = mapearDTO(domain.get(), membroDTO);
+		return dto;
+	}
+
+	private PagamentoDTO mapearDTO(Pagamento domain, MembroDTO membroDTO) {
+		PagamentoDTO dto = new PagamentoDTO();
+		dto.setId(domain.getId());
+		dto.setValor(domain.getValor());
+		dto.setDataPagamento(domain.getDataPagamento());
+		dto.setCpfPagante(domain.getPagante().getCpf());
+		dto.setPagante(membroDTO);
+		
+		return dto;
 	}
 
 }

@@ -30,12 +30,17 @@ public class PagamentoController {
 		return service.findAll();
 	}
 	
-	@GetMapping("/{cpf}")
+	@GetMapping("/{id}")
+	public PagamentoDTO buscarPorId(@PathVariable String id) throws Exception{
+		return service.findById(id);
+	}
+	
+	@GetMapping("/documento/{cpf}")
 	public PagamentoDTO buscarPorMembro(@PathVariable String cpf){
 		return null;
 	}
 	
-	@GetMapping("/{data}")
+	@GetMapping("/data/{data}")
 	public PagamentoDTO buscarPorData(@PathVariable LocalDate data){
 		return null;
 	}
