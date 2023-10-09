@@ -1,7 +1,7 @@
 package br.com.projectpd.infra.domain;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -18,6 +18,6 @@ public class Pagamento {
 	private String id;
 	private BigDecimal valor;
 	private Membro pagante;
-	private LocalDate dataPagamento;
+	private LocalDateTime dataPagamento;
 
 }

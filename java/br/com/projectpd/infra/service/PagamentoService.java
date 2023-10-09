@@ -1,7 +1,9 @@
 package br.com.projectpd.infra.service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,6 +34,22 @@ public class PagamentoService {
 	public List<PagamentoDTO> findAll() {
 		List<Pagamento> pagamentos = repository.findAll();
 		List<PagamentoDTO> listaDTO = pagamentos.stream().map(m -> modelMapper.map(m, PagamentoDTO.class)).collect(Collectors.toList());
+		Collections.sort(listaDTO, new Comparator<PagamentoDTO>() {
+			  public int compare(PagamentoDTO o1, PagamentoDTO o2) {
+			      if (o1.getDataPagamento() == null || o2.getDataPagamento() == null)
+			        return 0;
+			      return o2.getDataPagamento().compareTo(o1.getDataPagamento());
+			  }
+			});
+		
+
+		listaDTO.forEach(i ->{
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+			i.setDataExibicao(i.getDataPagamento().format(formatter));
+			return;
+			});
+		
+		
 		return listaDTO;
 	}
 	
@@ -50,7 +68,7 @@ public class PagamentoService {
 		}
 		novoPagamento.setPagante(membro);
 		novoPagamento.setValor(dto.getValor());
-		novoPagamento.setDataPagamento(LocalDate.now());
+		novoPagamento.setDataPagamento(LocalDateTime.now());
 		repository.save(novoPagamento);
 	}
 

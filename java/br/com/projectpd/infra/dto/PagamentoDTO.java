@@ -1,7 +1,7 @@
 package br.com.projectpd.infra.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +14,7 @@ public class PagamentoDTO {
 	private BigDecimal valor;
 	private MembroDTO pagante;
 	private String cpfPagante;
-	private LocalDate dataPagamento;
+	private LocalDateTime dataPagamento;
+	private String dataExibicao;
 
 }
