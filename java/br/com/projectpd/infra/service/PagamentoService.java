@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.projectpd.infra.domain.FechamentoPagamento;
 import br.com.projectpd.infra.domain.Membro;
 import br.com.projectpd.infra.domain.Pagamento;
 import br.com.projectpd.infra.dto.MembroDTO;
@@ -42,7 +43,6 @@ public class PagamentoService {
 			  }
 			});
 		
-
 		listaDTO.forEach(i ->{
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 			i.setDataExibicao(i.getDataPagamento().format(formatter));
@@ -91,6 +91,11 @@ public class PagamentoService {
 		dto.setPagante(membroDTO);
 		
 		return dto;
+	}
+
+	public FechamentoPagamento fecharMes(Integer mes) {
+		List<Pagamento> pagamentos = repository.findAll();
+		return null;
 	}
 
 }
