@@ -1,5 +1,6 @@
 package br.com.projectpd.infra.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -18,6 +19,7 @@ import br.com.projectpd.infra.domain.Pagamento;
 import br.com.projectpd.infra.dto.MembroDTO;
 import br.com.projectpd.infra.dto.PagamentoDTO;
 import br.com.projectpd.infra.dto.PagamentoSaveDTO;
+import br.com.projectpd.infra.enums.MesFechamentoEnum;
 import br.com.projectpd.infra.repository.PagamentoRepository;
 
 
@@ -94,8 +96,21 @@ public class PagamentoService {
 	}
 
 	public FechamentoPagamento fecharMes(Integer mes) {
-		List<Pagamento> pagamentos = repository.findAll();
-		return null;
+		BigDecimal valorTotal = BigDecimal.ZERO;
+		List<Pagamento> pagamentos = findByRangeData(mes);
+		for(Pagamento p : pagamentos) {
+			valorTotal = valorTotal.add(p.getValor());
+		}
+		
+		FechamentoPagamento fechamento = new FechamentoPagamento(pagamentos, valorTotal, MesFechamentoEnum.findById(mes));
+		return fechamento;
+	}
+	
+	private List<Pagamento> findByRangeData(Integer mes){
+		LocalDateTime hoje = LocalDateTime.now();
+		LocalDateTime dataInicio = LocalDateTime.of(hoje.getYear(), mes, 1, 0, 0);
+		LocalDateTime dataFim = LocalDateTime.of(hoje.getYear(), mes, 29, 23, 59);
+		return repository.findByRangeData(dataInicio, dataFim);
 	}
 
 }
