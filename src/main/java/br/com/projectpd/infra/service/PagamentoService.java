@@ -33,6 +33,9 @@ public class PagamentoService {
 	
 	@Autowired
 	private MembroService membroService;
+	
+	@Autowired
+	private CriarArquivoExcelService criarArquivoExcelService;
 
 	public List<PagamentoDTO> findAll() {
 		List<Pagamento> pagamentos = repository.findAll();
@@ -95,7 +98,7 @@ public class PagamentoService {
 		return dto;
 	}
 
-	public FechamentoPagamento fecharMes(Integer mes) {
+	public byte[] fecharMes(Integer mes) {
 		BigDecimal valorTotal = BigDecimal.ZERO;
 		List<Pagamento> pagamentos = findByRangeData(mes);
 		for(Pagamento p : pagamentos) {
@@ -103,7 +106,7 @@ public class PagamentoService {
 		}
 		
 		FechamentoPagamento fechamento = new FechamentoPagamento(pagamentos, valorTotal, MesFechamentoEnum.findById(mes));
-		return fechamento;
+		return criarArquivoExcelService.criarArquivo("testeArquivoExcel", fechamento);
 	}
 	
 	private List<Pagamento> findByRangeData(Integer mes){

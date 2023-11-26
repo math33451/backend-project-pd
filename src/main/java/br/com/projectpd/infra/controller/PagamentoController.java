@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.projectpd.infra.domain.FechamentoPagamento;
 import br.com.projectpd.infra.dto.PagamentoDTO;
 import br.com.projectpd.infra.dto.PagamentoSaveDTO;
+import br.com.projectpd.infra.service.CriarArquivoExcelService;
 import br.com.projectpd.infra.service.PagamentoService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -25,6 +26,9 @@ public class PagamentoController {
 	
 	@Autowired
 	private PagamentoService service;
+	
+	@Autowired
+	private CriarArquivoExcelService criarArquivoExcelService;
 	
 	@GetMapping()
 	public List<PagamentoDTO> buscarTodosPagamentos(){
@@ -52,9 +56,15 @@ public class PagamentoController {
 		return ResponseEntity.ok("Pagamento registrado com sucesso.");
 	}
 	
-	@GetMapping("/fecharMes/{mes}")
-	public FechamentoPagamento fecharMes(@PathVariable Integer mes) {
-		return service.fecharMes(mes);
+	@PostMapping("/fecharMes/{mes}")
+	public void fecharMes(@PathVariable Integer mes, HttpServletResponse response) {
+		byte[] data = service.fecharMes(mes);
+		try {
+			response.setContentLength(data.length);
+			response.getOutputStream().write(data);
+			response.getOutputStream().flush();
+		} catch (Exception e) {
+//			logger.error("Erro ao gerar XLS: ", e);
+		}
 	}
-
 }
